@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>FieldTrack – Trabajador</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0f2744;
+      color: #ffffff;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px 40px;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+    }
+    .logo-icon {
+      width: 44px;
+      height: 44px;
+      background: #2563eb;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .logo-text {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+    .logo-text span { color: #60a5fa; }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #1a3560;
+      border-radius: 18px;
+      padding: 28px 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #93c5fd;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 18px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    input[type="text"]:focus { border-color: #2563eb; }
+    input[type="text"]::placeholder { color: rgba(255,255,255,0.3); }
+
+    /* ── Buttons ── */
+    .btn {
+      width: 100%;
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: opacity 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-start {
+      background: #16a34a;
+      color: #ffffff;
+      margin-top: 24px;
+    }
+    .btn-stop {
+      background: #dc2626;
+      color: #ffffff;
+      margin-top: 14px;
+      display: none;
+    }
+
+    /* ── Status panel ── */
+    .status-panel {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 22px;
+      background: #1a3560;
+      border-radius: 18px;
+      padding: 22px 24px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: none;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .status-row:last-child { margin-bottom: 0; }
+
+    .status-label {
+      font-size: 13px;
+      color: #93c5fd;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      text-align: right;
+    }
+
+    .badge-activo {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(22, 163, 74, 0.25);
+      color: #4ade80;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .badge-activo::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    .badge-inactivo {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(220, 38, 38, 0.2);
+      color: #f87171;
+      padding: 5px 14px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .coords {
+      font-size: 13px;
+      color: #bfdbfe;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      text-align: right;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 14px 0;
+    }
+
+    /* ── Error toast ── */
+    .toast {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 16px;
+      background: #7f1d1d;
+      border: 1px solid #ef4444;
+      color: #fca5a5;
+      padding: 14px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-icon">📍</div>
+    <div class="logo-text">Field<span>Track</span></div>
+  </div>
+
+  <!-- Main card -->
+  <div class="card">
+    <label for="nombre">Tu nombre</label>
+    <input type="text" id="nombre" placeholder="Escribe tu nombre completo" autocomplete="name" />
+
+    <button class="btn btn-start" id="btnStart" onclick="iniciarTurno()">
+      ▶ Iniciar Turno
+    </button>
+    <button class="btn btn-stop" id="btnStop" onclick="terminarTurno()">
+      ■ Terminar Turno
+    </button>
+  </div>
+
+  <!-- Status panel -->
+  <div class="status-panel" id="statusPanel">
+    <div class="status-row">
+      <span class="status-label">Trabajador</span>
+      <span class="status-value" id="stNombre">—</span>
+    </div>
+    <div class="divider"></div>
+    <div class="status-row">
+      <span class="status-label">Estado</span>
+      <span id="stBadge"><span class="badge-activo">Activo</span></span>
+    </div>
+    <div class="divider"></div>
+    <div class="status-row">
+      <span class="status-label">Inicio de turno</span>
+      <span class="status-value" id="stHora">—</span>
+    </div>
+    <div class="divider"></div>
+    <div class="status-row">
+      <span class="status-label">Coordenadas</span>
+      <span class="coords" id="stCoords">Obteniendo GPS…</span>
+    </div>
+    <div class="divider"></div>
+    <div class="status-row">
+      <span class="status-label">Última actualización</span>
+      <span class="status-value" id="stUpdate">—</span>
+    </div>
+  </div>
+
+  <!-- Error toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDplCj5QATMvn6xpanR5nz-ehgGonjcjZQ",
+      authDomain: "fieldtrack-55214.firebaseapp.com",
+      databaseURL: "https://fieldtrack-55214-default-rtdb.firebaseio.com",
+      projectId: "fieldtrack-55214",
+      storageBucket: "fieldtrack-55214.firebasestorage.app",
+      messagingSenderId: "134432793888",
+      appId: "1:134432793888:web:6a4f3a3d5bc1340377a345",
+    }
+
+    firebase.initializeApp(firebaseConfig)
+    const db = firebase.database()
+
+    let watchId = null
+    let intervalId = null
+    let nombreActivo = null
+    let horaInicio = null
+    let ultimaPos = null
+
+    function showToast(msg) {
+      const t = document.getElementById('toast')
+      t.textContent = msg
+      t.style.display = 'block'
+    }
+    function hideToast() {
+      document.getElementById('toast').style.display = 'none'
+    }
+
+    function formatHora(date) {
+      return date.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    }
+
+    function enviarUbicacion(pos) {
+      const { latitude: lat, longitude: lng } = pos.coords
+      ultimaPos = { lat, lng }
+
+      const clave = nombreActivo.trim().replace(/[.#$[\]]/g, '_')
+      db.ref('colaboradores/' + clave).set({
+        nombre: nombreActivo,
+        lat,
+        lng,
+        timestamp: Date.now(),
+        horaInicio: horaInicio.getTime(),
+        status: 'activo',
+      })
+
+      document.getElementById('stCoords').textContent =
+        `${lat.toFixed(6)}, ${lng.toFixed(6)}`
+      document.getElementById('stUpdate').textContent = formatHora(new Date())
+    }
+
+    function onGPSError(err) {
+      showToast('Error de GPS: ' + err.message)
+    }
+
+    function iniciarTurno() {
+      hideToast()
+      const nombre = document.getElementById('nombre').value.trim()
+      if (!nombre) {
+        showToast('Por favor escribe tu nombre antes de iniciar.')
+        return
+      }
+
+      if (!navigator.geolocation) {
+        showToast('Este dispositivo no soporta GPS.')
+        return
+      }
+
+      nombreActivo = nombre
+      horaInicio = new Date()
+
+      // UI
+      document.getElementById('nombre').disabled = true
+      document.getElementById('btnStart').style.display = 'none'
+      document.getElementById('btnStop').style.display = 'block'
+      const panel = document.getElementById('statusPanel')
+      panel.style.display = 'block'
+      document.getElementById('stNombre').textContent = nombre
+      document.getElementById('stHora').textContent = formatHora(horaInicio)
+      document.getElementById('stBadge').innerHTML = '<span class="badge-activo">Activo</span>'
+
+      // Pedir GPS y mandar posición inmediata
+      navigator.geolocation.getCurrentPosition(enviarUbicacion, onGPSError, {
+        enableHighAccuracy: true, timeout: 10000,
+      })
+
+      // Actualizar cada 5 segundos
+      intervalId = setInterval(() => {
+        navigator.geolocation.getCurrentPosition(enviarUbicacion, onGPSError, {
+          enableHighAccuracy: true, timeout: 10000,
+        })
+      }, 5000)
+    }
+
+    function terminarTurno() {
+      if (intervalId) clearInterval(intervalId)
+      if (watchId) navigator.geolocation.clearWatch(watchId)
+      intervalId = null
+      watchId = null
+
+      if (nombreActivo) {
+        const clave = nombreActivo.trim().replace(/[.#$[\]]/g, '_')
+        db.ref('colaboradores/' + clave).update({
+          status: 'inactivo',
+          timestamp: Date.now(),
+        })
+      }
+
+      // UI
+      document.getElementById('stBadge').innerHTML = '<span class="badge-inactivo">Inactivo</span>'
+      document.getElementById('btnStop').style.display = 'none'
+      document.getElementById('btnStart').style.display = 'block'
+      document.getElementById('nombre').disabled = false
+      nombreActivo = null
+    }
+  </script>
+</body>
+</html>

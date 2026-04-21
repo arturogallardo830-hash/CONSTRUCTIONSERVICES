@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="80" fill="#00263E"/>
+  <!-- Factory building -->
+  <rect x="76" y="243" width="360" height="179" rx="8" fill="#0369EA"/>
+  <!-- Chimneys -->
+  <rect x="115" y="166" width="46" height="90" rx="5" fill="#0369EA"/>
+  <rect x="192" y="141" width="46" height="115" rx="5" fill="#0369EA"/>
+  <rect x="269" y="179" width="46" height="77" rx="5" fill="#0369EA"/>
+  <!-- Chimney caps -->
+  <rect x="108" y="153" width="60" height="20" rx="5" fill="#1DCAD3"/>
+  <rect x="185" y="128" width="60" height="20" rx="5" fill="#1DCAD3"/>
+  <rect x="262" y="166" width="60" height="20" rx="5" fill="#1DCAD3"/>
+  <!-- Smoke -->
+  <circle cx="138" cy="132" r="12" fill="white" opacity="0.25"/>
+  <circle cx="128" cy="106" r="9" fill="white" opacity="0.15"/>
+  <circle cx="215" cy="103" r="15" fill="white" opacity="0.25"/>
+  <circle cx="205" cy="71" r="10" fill="white" opacity="0.15"/>
+  <circle cx="292" cy="143" r="11" fill="white" opacity="0.25"/>
+  <!-- Windows -->
+  <rect x="102" y="276" width="56" height="46" rx="5" fill="white" opacity="0.9"/>
+  <rect x="179" y="276" width="56" height="46" rx="5" fill="white" opacity="0.9"/>
+  <rect x="256" y="276" width="56" height="46" rx="5" fill="white" opacity="0.9"/>
+  <rect x="333" y="276" width="56" height="46" rx="5" fill="white" opacity="0.9"/>
+  <!-- Door -->
+  <rect x="212" y="343" width="88" height="79" rx="5" fill="#00263E"/>
+  <circle cx="290" cy="385" r="7" fill="#1DCAD3"/>
+  <!-- Bottom accent -->
+  <rect x="76" y="409" width="360" height="13" rx="6" fill="#1DCAD3"/>
+  <!-- GPS pin top right -->
+  <circle cx="400" cy="100" r="46" fill="#0369EA"/>
+  <path d="M400 60 C378 60 360 78 360 100 C360 126 400 148 400 148 C400 148 440 126 440 100 C440 78 422 60 400 60Z" fill="#1DCAD3"/>
+  <circle cx="400" cy="100" r="16" fill="#00263E"/>
+</svg>

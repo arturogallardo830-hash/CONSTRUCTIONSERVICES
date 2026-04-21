@@ -1,0 +1,45 @@
+{
+  "name": "FieldTrack — Control de Campo",
+  "short_name": "FieldTrack",
+  "description": "Rastreo de colaboradores y flotilla en tiempo real",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#00263E",
+  "theme_color": "#0369EA",
+  "orientation": "landscape",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "icon-pwa.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Mapa en vivo",
+      "short_name": "Mapa",
+      "url": "/dashboard",
+      "icons": [{ "src": "icon-pwa.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Trabajadores",
+      "short_name": "Workers",
+      "url": "/workers",
+      "icons": [{ "src": "icon-pwa.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Mensajes",
+      "short_name": "Chat",
+      "url": "/messages",
+      "icons": [{ "src": "icon-pwa.svg", "sizes": "any" }]
+    }
+  ]
+}

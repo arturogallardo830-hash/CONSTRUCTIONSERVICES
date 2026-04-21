@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(npx create-vite@latest --template react --name obrasync)",
+      "Bash(mv vite-project/* .)",
+      "Bash(mv vite-project/.gitignore .)",
+      "Bash(rm -rf vite-project)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "WebSearch",
+      "WebFetch(domain:www.samsara.com)",
+      "WebFetch(domain:www.designyourway.net)",
+      "WebFetch(domain:kb.samsara.com)",
+      "Bash(grep -n \"height.*100vh\\\\|height.*100%\" pages/*.jsx)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(python3 -c ':*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)"
+    ]
+  }
+}
